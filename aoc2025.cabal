@@ -1,0 +1,68 @@
+cabal-version:      3.0
+name:               aoc2025
+version:            0.1.0.0
+-- synopsis:
+-- description:
+license:            LGPL-3.0-or-later
+license-file:       LICENSE
+author:             thedrofdoctoring
+maintainer:         bennetanstee@gmail.com
+-- copyright:
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+
+-- extra-source-files:
+
+common day
+  hs-source-dirs:      app
+  build-depends:
+    base ^>= {4.18, 4.19, 4.20, 4.21},
+  other-modules:       Dummy
+  default-language:    GHC2024
+  multi-repl: True
+executable 2025_01
+  import:              day
+  main-is:             01.hs
+
+executable 2025_02
+  import:              day
+  main-is:             02.hs
+
+executable 2025_03
+  import:              day
+  main-is:             03.hs
+
+executable 2025_04
+  import:              day
+  main-is:             04.hs
+
+executable 2025_05
+  import:              day
+  main-is:             05.hs
+
+executable 2025_06
+  import:              day
+  main-is:             06.hs
+
+executable 2025_07
+  import:              day
+  main-is:             07.hs
+
+executable 2025_08
+  import:              day
+  main-is:             08.hs
+executable 2025_09
+  import:              day
+  main-is:             09.hs
+
+executable 2025_10
+  import:              day
+  main-is:             10.hs
+
+executable 2025_11
+  import:              day
+  main-is:             11.hs
+
+executable 2025_12
+  import:              day
+  main-is:             12.hs
