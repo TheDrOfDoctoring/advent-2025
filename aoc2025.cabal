@@ -13,13 +13,18 @@ extra-doc-files:    CHANGELOG.md
 
 -- extra-source-files:
 
+
 common day
+  ghc-options: -O2
   hs-source-dirs:      app
   build-depends:
-    base ^>= {4.18, 4.19, 4.20, 4.21},
+    base ^>= {4.18, 4.19, 4.20, 4.21}, split
   other-modules:       Dummy
   default-language:    GHC2024
-  multi-repl: True
+
+common profiling
+  ghc-options: -O2 -threaded -fprof-auto "-with-rtsopts=-N -p -s -hc -i0.1"
+
 executable 2025_01
   import:              day
   main-is:             01.hs
