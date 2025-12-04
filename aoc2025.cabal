@@ -18,12 +18,20 @@ common day
   ghc-options: -O2
   hs-source-dirs:      app
   build-depends:
-    base ^>= {4.18, 4.19, 4.20, 4.21}, split
+    base ^>= {4.18, 4.19, 4.20, 4.21}, split, containers
   other-modules:       Dummy
   default-language:    GHC2024
 
 common profiling
   ghc-options: -O2 -threaded -fprof-auto "-with-rtsopts=-N -p -s -hc -i0.1"
+
+common lib
+  ghc-options: -O2
+  hs-source-dirs:      lib
+  build-depends:
+    base ^>= {4.18, 4.19, 4.20, 4.21}, split, containers
+  default-language:    GHC2024
+  other-modules:       Util
 
 executable 2025_01
   import:              day
@@ -38,7 +46,7 @@ executable 2025_03
   main-is:             03.hs
 
 executable 2025_04
-  import:              day
+  import:              day, lib
   main-is:             04.hs
 
 executable 2025_05
