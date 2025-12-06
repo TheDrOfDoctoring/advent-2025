@@ -3,7 +3,7 @@
 module Main (main) where
 import System.IO
 import qualified Data.Map as M
-import Util
+import Data.PositionMap
 
 type TotalRemoved = Int
 
@@ -22,19 +22,18 @@ partOne m = length $ filter id $ map (\ (pos, char) ->
             _   -> False
         ) m
     where posMap = M.fromList m
-          b = bounds m
+          b = mapBounds m
 
 partTwo :: [(Position, Char)] -> TotalRemoved
 partTwo m = snd $ removeRolls b (initial, 0)
     where initial = M.fromList m
-          b = bounds m
+          b = mapBounds m
 
 removeRolls :: Bounds -> (PositionMap, TotalRemoved) -> (PositionMap, TotalRemoved)
-removeRolls bounds (m, count) = case toRemove of
-                                (x:xs) -> removeRolls bounds (newMap, count + length toRemove)
+removeRolls bounds' (m, count) = case toRemove of
+                                (_:_) -> removeRolls bounds' (newMap, count + length toRemove)
                                 []     -> (m, count)
-    where remove pos = M.insert pos '.' m
-          toRemove :: [Position] = map fst $ filter (\(pos, char) -> (char == '@') && canBeRemoved bounds m pos) (M.toList m)
+    where toRemove :: [Position] = map fst $ filter (\(pos, char) -> (char == '@') && canBeRemoved bounds' m pos) (M.toList m)
           newMap = M.mapWithKey (\pos char -> 
                 if pos `elem` toRemove 
                 || char == '.' then '.' 

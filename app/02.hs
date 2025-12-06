@@ -4,9 +4,9 @@ import System.IO
 import Data.List.Split
 import Data.Int
 import Data.Bifunctor (bimap)
+import Util
 
 type Length = Int
-type Long = Int64
 
 type Left = Long
 type Right = Long
@@ -49,7 +49,6 @@ sumValidity f = sum
               . concatMap rangeInvalids
               . splitInput
             where splitInput   = map ( bimap r r . parsePair . splitOn "-" ) . splitOn ","
-                  parsePair xs = (head xs, last xs)
                   rangeInvalids (a, b) = filter (not . f) [a .. b]
                   r = read
 

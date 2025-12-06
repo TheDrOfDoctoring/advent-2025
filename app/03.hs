@@ -4,9 +4,6 @@ module Main (main) where
 import System.IO
 import Data.Int
 import Data.List
-import Data.Maybe
-import Data.Function
-import Data.Ord
 import Data.Char (digitToInt)
 
 type Long = Int64
@@ -19,11 +16,14 @@ fromNums = fst . foldr addNum (0, 0)
          digits n = 1 + digits (div n 10)
 
 -- very slow compared to the version used in partTwo, this can be replaced with a version of part2 that uses 2 as the Size value
+partOne :: [[Char]] -> Long
 partOne s = sum $ map (maximum . highestConsectutive) l
     where l = map (map (fromIntegral . digitToInt)) s
           highestConsectutive [] = []
           highestConsectutive (a:as) = f (a:as) ++ highestConsectutive as
             where f (x:xs) = [fromNums [x, y] | y <- xs ]
+  
+partTwo :: [[Char]] -> Long
 partTwo s = sum $ map (fromNums . largestIn 12) l
     where l = map (map (fromIntegral . digitToInt)) s
 

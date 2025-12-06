@@ -15,7 +15,7 @@ data Rotation = Rotation
 type ZeroCount = Int
 
 rotation :: Rotation -> Int
-rotation r@(Rotation amount direction) = case direction of
+rotation _a@(Rotation amount direction) = case direction of
             Left  -> -amount
             Right -> amount
 
@@ -23,7 +23,7 @@ parseRotations :: [String] -> [Rotation]
 parseRotations = map (\ (x : xs) -> Rotation (read xs) (direction x))
     where direction d = case d of
                     'L' -> Main.Left
-                    'R' -> Main.Right
+                    _   -> Main.Right
 
 rotateBy :: Int -> Rotation -> Int
 rotateBy x r | y > 99 = rotateBy (y - 100) (Rotation r' (direction r))
