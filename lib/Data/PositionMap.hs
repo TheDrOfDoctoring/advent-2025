@@ -1,17 +1,34 @@
-{-# LANGUAGE OverloadedRecordDot, DuplicateRecordFields #-}
+{-# LANGUAGE OverloadedRecordDot, DuplicateRecordFields, DeriveGeneric, TypeOperators, TypeFamilies #-} 
 
 module Data.PositionMap where
 
 import qualified Data.Map as M
 import Data.Maybe
-
+import Data.Hashable
+import Data.MemoTrie
+import GHC.Generics
 data Position = Position {
     x :: Int,
     y :: Int
 } deriving (Eq, Ord, Show)
 
+deriving instance Generic Position
+instance HasTrie Position where
+  newtype (Position :->: b) = PositionTrie { unPositionTrie :: Reg Position :->: b } 
+  trie = trieGeneric PositionTrie
+  untrie = untrieGeneric unPositionTrie
+  enumerate = enumerateGeneric unPositionTrie
+
+instance Hashable Position
+
 type PositionMap = M.Map Position Char
 type Bounds = (Int, Int)
+
+downFrom :: Position -> Position
+downFrom pos = Position pos.x (pos.y + 1)
+
+adjacentHorizontal :: Position ->[Position]
+adjacentHorizontal pos = [Position (pos.x+1) pos.y, Position (pos.x-1) pos.y]
 
 toMap :: [[Char]] -> [(Position, Char)]
 toMap l = concatMap

@@ -23,7 +23,7 @@ library
   build-depends:
       base ^>= {4.18, 4.19, 4.20, 4.21}, 
       split, 
-      containers
+      containers, hashable, MemoTrie, newtype-generics
   default-language: GHC2024
 
 common day
@@ -32,7 +32,7 @@ common day
   build-depends:
       base ^>= {4.18, 4.19, 4.20, 4.21},
       split,
-      containers,
+      containers, hashable, MemoTrie, newtype-generics,
       aoc2025
   other-modules:       Dummy
   default-language:    GHC2024
@@ -68,6 +68,7 @@ executable 2025_06
 executable 2025_07
   import:              day
   main-is:             07.hs
+  build-depends:       unordered-containers
 
 executable 2025_08
   import:              day
