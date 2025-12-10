@@ -27,7 +27,7 @@ library
   default-language: GHC2024
 
 common day
-  ghc-options: -O2 -Wunused-binds
+  ghc-options: -O2 -threaded -Wunused-binds
   hs-source-dirs:      app
   build-depends:
       base ^>= {4.18, 4.19, 4.20, 4.21},
@@ -76,7 +76,7 @@ executable 2025_08
 executable 2025_09
   import:              day
   main-is:             09.hs
-
+  build-depends:       unordered-containers, array, deepseq, parallel
 executable 2025_10
   import:              day
   main-is:             10.hs

@@ -32,6 +32,18 @@ subsumes (Range(lower1, upper1)) (Range(lower2, upper2))
                   = Just $ Range (lower1, upper1)
     |   otherwise = Nothing
 
+createRange :: Integral a => a -> a -> Range
+createRange a b = if a > b then Range (fromIntegral b, fromIntegral a) else Range (fromIntegral a, fromIntegral b)
+
+-- | If the first range is subsumed by the second range, returns True
+-- Otherwise, returns False
+isSubsumedBy :: Range -> Range -> Bool
+isSubsumedBy (Range(lower1, upper1)) (Range(lower2, upper2))
+    |   lower2 <= lower1 &&
+        upper2 >= upper1
+                  = True
+    |   otherwise = False
+
 mergeRanges :: [Range] -> [Range]
 mergeRanges = foldl ranging []
   where

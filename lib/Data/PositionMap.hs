@@ -12,6 +12,8 @@ data Position = Position {
     y :: Int
 } deriving (Eq, Ord, Show)
 
+
+
 deriving instance Generic Position
 instance HasTrie Position where
   newtype (Position :->: b) = PositionTrie { unPositionTrie :: Reg Position :->: b } 
@@ -23,6 +25,9 @@ instance Hashable Position
 
 type PositionMap = M.Map Position Char
 type Bounds = (Int, Int)
+
+distanceTo :: Position -> Position -> Integer
+distanceTo a b = fromIntegral $ (a.x-b.x)^2 + (a.y-b.y)^2
 
 downFrom :: Position -> Position
 downFrom pos = Position pos.x (pos.y + 1)
