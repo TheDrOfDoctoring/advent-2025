@@ -6,8 +6,12 @@ import Data.Char
 import Data.Maybe
 import Data.IntSet (IntSet)
 import Data.Set (Set)
-import qualified Data.Set as JSet
 import qualified Data.IntSet as Set
+
+import Numeric.LinearProgramming
+
+import Data.List (transpose)
+import Linear.Solver (intopt)
 
 type Button = IntSet
 type Light = (Int, Bool)
@@ -46,13 +50,32 @@ composeUntil desired base buttons amount | desired `elem` buttons = amount
 partOne :: String -> Int
 partOne input = sum $ map solveOne (parse input)
 
--- I'm fairly satisfied with my Part 1 answer
--- I don't think I have the knowledge to do Part 2 in a way I would be satisfied with
--- Maybe some other day.
+buttonToColumn :: Button -> [Double]
+buttonToColumn button = map isPresent [0..11]
+               where isPresent n = if Set.member n button then 1 else 0
+
+buttonsToRows :: [Button] -> [[Double]]
+buttonsToRows = transpose . map buttonToColumn
+
+machineToConstraints :: Machine -> Constraints
+machineToConstraints machine = Dense $ zipWith (:==:) (buttonsToRows btons) jolts
+    where (btons, jolts) = (buttons machine, map fromIntegral $ joltages machine)
+
+solveMachine :: Machine -> Double
+solveMachine machine = 
+    case intopt prob (machineToConstraints machine) [] of
+        Feasible (x, _) -> x
+        Optimal  (x, _) -> x
+        _               -> -10000
+    where size = length (buttons machine)
+          prob = Minimize $ replicate size 1
+
+partTwo :: String -> Double
+partTwo input = sum $ map solveMachine (parse input)
 
 main :: IO ()
 main = do
     let filename = "inputs/10.input"
     content <- openFile filename ReadMode >>= hGetContents
     print $ "Part 1: " <> show (partOne content)
-    -- print $ "Part 2: " <> show (partTwo content)
+    print $ "Part 2: " <> show (partTwo content)

@@ -12,8 +12,6 @@ build-type:         Simple
 extra-doc-files:    CHANGELOG.md
 
 -- extra-source-files:
-
-
 library
   hs-source-dirs: lib
   exposed-modules:
@@ -26,13 +24,21 @@ library
       containers, hashable, MemoTrie, newtype-generics
   default-language: GHC2024
 
+common linear
+  hs-source-dirS: lin
+  build-depends: base ^>= {4.18, 4.19, 4.20, 4.21}, hmatrix-glpk, hmatrix
+  c-sources: lin/C/glpk.c
+  extra-libraries: glpk
+  other-modules: Linear.Solver
+
+
 common day
   ghc-options: -O2 -threaded -Wunused-binds
   hs-source-dirs:      app
   build-depends:
       base ^>= {4.18, 4.19, 4.20, 4.21},
       split,
-      containers, hashable, MemoTrie, newtype-generics,
+      containers, hashable, MemoTrie, newtype-generics, 
       aoc2025
   other-modules:       Dummy
   default-language:    GHC2024
@@ -78,9 +84,9 @@ executable 2025_09
   main-is:             09.hs
   build-depends:       unordered-containers, array, deepseq, parallel
 executable 2025_10
-  import:              day
+  import:              day, linear
   main-is:             10.hs
-
+  build-depends:       hmatrix-glpk
 executable 2025_11
   import:              day
   main-is:             11.hs
